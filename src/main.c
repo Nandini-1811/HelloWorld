@@ -3,6 +3,7 @@
 #include<string.h>
 #include "../include/tokens.h"
 #include "../include/ast.h"
+#include "../include/ir.h"
 
 /*forward declerations*/
 typedef struct{
@@ -10,10 +11,11 @@ typedef struct{
     int pos, line, column, length;
 }Scanner;
 
-void scanner_init(Scanner* s, const char* source);
-Token next_token(Scanner* s);
-ASTNode* parse(Token* tokens, int count);
-int analyze(ASTNode* root);
+void            scanner_init(Scanner* s, const char* source);
+Token           next_token(Scanner* s);
+ASTNode*        parse(Token* tokens, int count);
+int             analyze(ASTNode* root);
+IRProgram*      generate_ir(ASTNode* root);
 
 
 /* read entire file into a string */
@@ -31,7 +33,14 @@ char* read_file(const char* path){
     fread(buffer,1,size,f);
     buffer[size] = '\0';
     fclose(f);
-    return buffer;
+
+    /* strip BOM */
+    char* start = buffer;
+    if ((unsigned char)start[0] == 0xEF &&
+        (unsigned char)start[1] == 0xBB &&
+        (unsigned char)start[2] == 0xBF)
+        start += 3;
+    return start;
 }
 
 /* main */
@@ -40,6 +49,7 @@ int main(int argc, char* argv[]){
         fprintf(stderr,"Usage: lang <file.learn>\n");
         return 1;
     }
+
     /* Stage 1 - SCAN */
     char* source = read_file(argv[1]);
     Scanner s;
@@ -55,18 +65,21 @@ int main(int argc, char* argv[]){
 
     /* Stage 2 : Parse */
     ASTNode* ast = parse(tokens,count);
-
-    /* PRINT AST */
     printf("\n=== AST ===\n");
     print_ast(ast,0);
 
     /* Stage 3 : Semantic Analysis */
     int errors = analyze(ast);
     if(errors){
-        fprintf(stderr,"\nCompilation failed.\n");
+        fprintf(stderr,"Compilation failed./n");
         return 1;
     }
-    printf("\nNo semantic errors found.\n");
+    
+    /* Stage 4 : IR Generation */
+    IRProgram* ir = generate_ir(ast);
+    ir_print(ir);
+    ir_destroy(ir);
+
 
     free_ast(ast);
     free(tokens);
