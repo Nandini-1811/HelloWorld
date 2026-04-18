@@ -1,21 +1,22 @@
-# HelloWorld Compiler
+# HelloWorld Programming Language 
 
-HelloWorld is a beginner-friendly educational programming language designed to be readable like plain English.  
-This repository contains a full compiler pipeline and interpreter for `.learn` source files, implemented in C.
+HelloWorld is a beginner-friendly programming language designed to be **read like plain English**.  
+It is implemented from scratch in C with a complete compiler pipeline and interpreter.
 
-# Overview
+---
 
-HelloWorld was built with one core idea:
+## Motivation
 
-> Any complete beginner should be able to read a program and understand it instantly.
+Most programming languages are difficult for beginners because of symbols and syntax complexity.
 
-Instead of symbolic or cryptic syntax, HelloWorld uses readable keywords such as `let`, `define`, `returns`, `give`, `check`, `otherwise`, `repeat`, and `show`.
+HelloWorld solves this by using:
+- plain English keywords
+- readable sentence-like syntax
+- explicit typing
 
 Example:
 
 ```learn
-note: fibonacci in HelloWorld
-
 define fib(n is num) returns num {
     check (n <= 1) {
         give n
@@ -28,100 +29,63 @@ let result is num = fib(10)
 show(result)
 ```
 
-# Features
-- English-like syntax for beginner readability
-- .learn source file extension
+## Features
 
-# Primitive types:
-- num
-- decimal
-- text
-- bool
-- nothing
+- English-like readable syntax  
+- `.learn` file extension  
+- Built entirely in C  
 
-# Core constructs:
-- variable declarations
-- reassignment
-- functions
-- return statements
-- conditionals
-- loops
-- comments
+### Supports:
+- variables and reassignment  
+- functions  
+- recursion  
+- conditionals (`check / otherwise`)  
+- loops (`repeat`)  
+- printing (`show`)  
 
-- Compiler pipeline built from scratch in C
- Recursive function support in the interpreter
+- Full compiler pipeline implemented  
+- Working interpreter with recursion support  
 
+## Compiler Architecture
 
-- Compiler Pipeline
+The project follows a real-world compiler design:
 
-Stage 1 — Scanner
-Tokenizes .learn source code into a stream of tokens.
+- Stage 1 — Scanner (Lexer)
+        
+    Converts source code → tokens
 
-Stage 2 — Parser
-Builds an Abstract Syntax Tree using recursive descent parsing.
+- Stage 2 — Parser
+    
+     Builds Abstract Syntax Tree (AST)
 
-Stage 3 — Semantic Analyzer
-Performs type checking, symbol table management, and scope validation.
+     Recursive descent parsing
 
-Stage 4 — IR Generator
- Converts the AST into a 3-address intermediate representation.
+- Stage 3 — Semantic Analysis
 
-Stage 5 — Interpreter
-Executes the generated IR, including:
-    - variable evaluation
-    - arithmetic and comparisons
-    - conditionals
-    - loops
-    - function calls
-    - recursion
+    Type checking
 
-- Current Status
-  Scanner                                 (done)
-  Parser                                  (done)
-  Semantic Analyzer                       (done)
-  IR Generator                            (done)
-  Interpreter                             (done)
-  Code generation / bytecode backend      (in progress)
+    Symbol table
 
+    Scope validation
+- Stage 4 — IR Generation
 
-- Build
- Compile with GCC:
+    Converts AST → 3-address code
+- Stage 5 — Interpreter
 
-```bash
-gcc -Wall -Iinclude src/scanner.c src/parser.c src/symtable.c src/semantic.c src/ir_gen.c src/interpreter.c src/main.c -o lang
-```
+    Executes IR 
+    
+    Handles:
+        
+        control flow
+            
+        function calls
+            
+        recursion
+            
+        variable storage
 
 
-- Run
-- Run any .learn source file:
-
-```bash
-./lang test/hello.learn
-```
-
-On Windows PowerShell:
-```bash
-.\lang.exe test\hello.learn
-```
-
-
-- Example Output
-For the sample Fibonacci test program, the output is:
-
-```bash
-30
-big number
-0
-1
-2
-3
-4
-55
-```
-
-
-- Project Structure
-
+## Project Structure
 ```bash
 HelloWorld/
 ├── include/
@@ -147,78 +111,111 @@ HelloWorld/
 └── README.md
 ```
 
+## Build
+Using GCC
+```bash
+gcc -Wall -Iinclude src/scanner.c src/parser.c src/symtable.c src/semantic.c src/ir_gen.c src/interpreter.c src/main.c -o lang
+```
 
-- Language Syntax
+## Run
+- Linux / Mac
+```learn
+./lang test/hello.learn
+```
 
- Variable declaration
+- Windows (PowerShell)
+``` learn 
+.\lang.exe test\hello.learn
+```
 
-``` learn
-let age is num = 20
-let price is decimal = 99.99
+Always provide correct file path (files are inside test/ folder)
+
+# Example Output
+```learn
+30
+big number
+0
+1
+2
+3
+4
+55
+```
+
+# Language Syntax
+
+- Variable Declaration
+```learn
+let x is num = 10
 let name is text = "Aryan"
-let active is bool = true
 ```
 
- Reassignment
-``` learn
-age = 21
-name = "Rahul"
+- Reassignment
+```learn
+x = 20
 ```
 
- Functions
+- Function
 ```learn
 define add(a is num, b is num) returns num {
     give a + b
 }
 ```
-
- Conditionals
+- Conditional
 ```learn
-check (age > 18) {
-    show("adult")
+check (x > 5) {
+    show("big")
 } otherwise {
-    show("minor")
+    show("small")
 }
 ```
 
- Loops
+- Loop
 ```learn
 repeat (let i is num = 0 ; i < 5 ; i++) {
     show(i)
 }
 ```
-
- Comments
-```learn 
+- Comment
+```learn
 note: this is a comment
 ```
 
-- Why this project matters
-
-HelloWorld is not just a parser demo. It is a full educational language project that explores real compiler concepts:
-
- lexical analysis
- parsing
- AST design
- semantic analysis
- intermediate representations
- runtime execution
- function call handling
- recursion support
+# Current Status
+ - Scanner
+ - Parser
+ - Semantic Analyzer
+ - IR Generator
+ - Interpreter
+ - Code Generation (Planned)
 
 
-- Future Improvements
- list / map / pair / stack runtime support
- better error diagnostics
- standard library functions
- bytecode VM or native code generation
- improved CLI and test runner
+# Future Improvements
+ Support for:
+- lists
+- maps
+- stack operations
+- Better error handling
+- CLI improvements
+- Bytecode VM / Assembly backend
 
-- Author
-Built by Nandini Goel as a compiler design and systems programming project in C.
 
-- Repository Notes
-If you run a test file, remember to include the correct path, for example:
-```learn
-.\lang.exe test\test1.learn
-```
+# Why this project stands out
+
+This is not a simple parser project.
+
+It demonstrates:
+
+- Compiler design concepts
+- AST construction
+- Intermediate Representation (IR)
+- Runtime execution engine
+- Function call handling with recursion
+- Scope and memory management
+
+# Author
+
+Nandini Goel
+BTech CS | Compiler Design & Systems Programming Enthusiast
+
+GitHub: https://github.com/Nandini-1811
