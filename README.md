@@ -48,28 +48,28 @@ show(result)
 - loops
 - comments
 
-## Compiler pipeline built from scratch in C
-## Recursive function support in the interpreter
+# Compiler pipeline built from scratch in C
+ Recursive function support in the interpreter
 
 # Compiler Pipeline
 
-## Stage 1 — Scanner
+# Stage 1 — Scanner
 
 - Tokenizes .learn source code into a stream of tokens.
 
-## Stage 2 — Parser
+# Stage 2 — Parser
 
 - Builds an Abstract Syntax Tree using recursive descent parsing.
 
-## Stage 3 — Semantic Analyzer
+# Stage 3 — Semantic Analyzer
 
 - Performs type checking, symbol table management, and scope validation.
 
-## Stage 4 — IR Generator
+# Stage 4 — IR Generator
 
 - Converts the AST into a 3-address intermediate representation.
 
-## Stage 5 — Interpreter
+# Stage 5 — Interpreter
 
 - Executes the generated IR, including:
     - variable evaluation
@@ -78,8 +78,7 @@ show(result)
     - loops
     - function calls
     - recursion
-
-## Current Status
+# Current Status
  -  Scanner                                 (done)
  -  Parser                                  (done)
  -  Semantic Analyzer                       (done)
@@ -88,17 +87,15 @@ show(result)
  -  Code generation / bytecode backend      (in progress)
 
 
- ## Build
-
-# Compile with GCC:
+# Build
+ Compile with GCC:
 
 ```bash
 gcc -Wall -Iinclude src/scanner.c src/parser.c src/symtable.c src/semantic.c src/ir_gen.c src/interpreter.c src/main.c -o lang
 ```
 
 
-## Run
-
+# Run
 - Run any .learn source file:
 
 ```bash
@@ -127,7 +124,7 @@ big number
 ```
 
 
-## Project Structure
+# Project Structure
 
 ```bash
 HelloWorld/
@@ -155,9 +152,9 @@ HelloWorld/
 ```
 
 
-## Language Syntax
+# Language Syntax
 
-# Variable declaration
+ Variable declaration
 
 ``` learn
 let age is num = 20
@@ -166,20 +163,20 @@ let name is text = "Aryan"
 let active is bool = true
 ```
 
-# Reassignment
+ Reassignment
 ``` learn
 age = 21
 name = "Rahul"
 ```
 
-# Functions
+ Functions
 ```learn
 define add(a is num, b is num) returns num {
     give a + b
 }
 ```
 
-# Conditionals
+ Conditionals
 ```learn
 check (age > 18) {
     show("adult")
@@ -188,19 +185,19 @@ check (age > 18) {
 }
 ```
 
-# Loops
+ Loops
 ```learn
 repeat (let i is num = 0 ; i < 5 ; i++) {
     show(i)
 }
 ```
 
-# Comments
+ Comments
 ```learn 
 note: this is a comment
 ```
 
-## Why this project matters
+# Why this project matters
 
 HelloWorld is not just a parser demo. It is a full educational language project that explores real compiler concepts:
 
@@ -214,17 +211,17 @@ HelloWorld is not just a parser demo. It is a full educational language project 
 - recursion support
 
 
-## Future Improvements
+# Future Improvements
 - list / map / pair / stack runtime support
 - better error diagnostics
 - standard library functions
 - bytecode VM or native code generation
 - improved CLI and test runner
 
-## Author
+# Author
 Built by Nandini Goel as a compiler design and systems programming project in C.
 
-## Repository Notes
+# Repository Notes
 If you run a test file, remember to include the correct path, for example:
 ```learn
 .\lang.exe test\test1.learn
