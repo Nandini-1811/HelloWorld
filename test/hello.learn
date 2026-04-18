@@ -1,0 +1,28 @@
+note: HelloWorld final test
+
+define fib(n is num) returns num {
+    check (n <= 1) {
+        give n
+    } otherwise {
+        give fib(n - 1) + fib(n - 2)
+    }
+}
+
+let x is num = 10
+let y is num = 20
+let result is num = x + y
+show(result)
+
+check (result > 25) {
+    show("big number")
+} otherwise {
+    show("small number")
+}
+
+repeat (let i is num = 0 ; i < 5 ; i++) {
+    show(i)
+}
+
+let f is num = fib(10)
+show(f)
+

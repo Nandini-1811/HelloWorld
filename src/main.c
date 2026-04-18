@@ -4,6 +4,8 @@
 #include "../include/tokens.h"
 #include "../include/ast.h"
 #include "../include/ir.h"
+#include "../include/interpreter.h"
+
 
 /*forward declerations*/
 typedef struct{
@@ -65,8 +67,6 @@ int main(int argc, char* argv[]){
 
     /* Stage 2 : Parse */
     ASTNode* ast = parse(tokens,count);
-    printf("\n=== AST ===\n");
-    print_ast(ast,0);
 
     /* Stage 3 : Semantic Analysis */
     int errors = analyze(ast);
@@ -77,10 +77,13 @@ int main(int argc, char* argv[]){
     
     /* Stage 4 : IR Generation */
     IRProgram* ir = generate_ir(ast);
-    ir_print(ir);
+    
+    /* Stage 5 : Execute */
+    Interpreter* interp = interp_create();
+    interp_run(interp,ir);
+    interp_destroy(interp);
+
     ir_destroy(ir);
-
-
     free_ast(ast);
     free(tokens);
     return 0;

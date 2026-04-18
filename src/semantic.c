@@ -335,7 +335,7 @@ int analyze(ASTNode* root) {
     }
 
     /* print symbol table */
-    symtable_print(a.table);
+    // symtable_print(a.table);
 
     int had_error = a.had_error;
     symtable_destroy(a.table);
