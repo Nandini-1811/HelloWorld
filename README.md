@@ -50,39 +50,32 @@ show(result)
 
 The project follows a real-world compiler design:
 
-- Stage 1 — Scanner (Lexer)
-        
-    Converts source code → tokens
+# Stage 1 — Scanner (Lexer)
 
-- Stage 2 — Parser
-    
-     Builds Abstract Syntax Tree (AST)
+- Converts source code → tokens
 
-     Recursive descent parsing
+# Stage 2 — Parser
+- Builds Abstract Syntax Tree (AST)
+- Recursive descent parsing
 
-- Stage 3 — Semantic Analysis
+# Stage 3 — Semantic Analysis
+- Type checking
+- Symbol table
+- Scope validation
 
-    Type checking
+# Stage 4 — IR Generation
+- Converts AST → 3-address code
 
-    Symbol table
-
-    Scope validation
-- Stage 4 — IR Generation
-
-    Converts AST → 3-address code
-- Stage 5 — Interpreter
-
-    Executes IR 
-    
-    Handles:
-        
-        control flow
+# Stage 5 — Interpreter
+- Executes IR  Handles:
+      
+    1. control flow
             
-        function calls
+    2. function calls
             
-        recursion
+    3. recursion
             
-        variable storage
+    4. variable storage
 
 
 ## Project Structure
