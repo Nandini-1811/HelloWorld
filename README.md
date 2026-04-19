@@ -167,6 +167,19 @@ The compiler detects and reports:
 
 ---
 
+## Version Roadmap
+
+### v1.0 — Complete 
+Primitive types, functions, conditionals, loops, recursion,
+full 5-stage compiler pipeline in C.
+
+### v2.0 — Planned
+- List, map, stack, pair data structures
+- Full operation support per the language reference document
+- Text slicing, joining, and indexing
+
+---
+
 ## Author
 
 Built by Nandini Goel — fresher CS project demonstrating compiler design
