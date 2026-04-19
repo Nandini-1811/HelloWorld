@@ -1,22 +1,17 @@
-# HelloWorld Programming Language 
+# HelloWorld Compiler
 
-HelloWorld is a beginner-friendly programming language designed to be **read like plain English**.  
-It is implemented from scratch in C with a complete compiler pipeline and interpreter.
+A compiler for **HelloWorld** — a custom educational programming language
+built entirely from scratch in C. HelloWorld is designed so any complete
+beginner can read a program and understand it instantly, with no
+documentation needed.
+
+Source files use the `.learn` extension.
 
 ---
 
-## Motivation
-
-Most programming languages are difficult for beginners because of symbols and syntax complexity.
-
-HelloWorld solves this by using:
-- plain English keywords
-- readable sentence-like syntax
-- explicit typing
-
-Example:
-
+## Quick Example
 ```learn
+note: fibonacci in HelloWorld
 define fib(n is num) returns num {
     check (n <= 1) {
         give n
@@ -24,191 +19,158 @@ define fib(n is num) returns num {
         give fib(n - 1) + fib(n - 2)
     }
 }
-
 let result is num = fib(10)
 show(result)
 ```
+Output:
+55
 
-## Features
+---
 
-- English-like readable syntax  
-- `.learn` file extension  
-- Built entirely in C  
+## Language Design
 
-### Supports:
-- variables and reassignment  
-- functions  
-- recursion  
-- conditionals (`check / otherwise`)  
-- loops (`repeat`)  
-- printing (`show`)  
+| Feature | Syntax |
+|---|---|
+| Variable | `let x is num = 10` |
+| Reassign | `x = 20` |
+| Function | `define add(a is num, b is num) returns num { }` |
+| Return | `give a + b` |
+| Print | `show(x)` |
+| If / Else | `check (x > 5) { } otherwise { }` |
+| Loop | `repeat (let i is num = 0 ; i < 10 ; i++) { }` |
+| For-each | `repeat each item in scores { }` |
+| Comment | `note: this is a comment` |
 
-- Full compiler pipeline implemented  
-- Working interpreter with recursion support  
+### Types
+| Type | Meaning |
+|---|---|
+| `num` | whole integers |
+| `decimal` | floating point numbers |
+| `text` | strings |
+| `bool` | true or false |
+| `nothing` | void — functions that return no value |
+
+---
 
 ## Compiler Architecture
-
-The project follows a real-world compiler design:
-
-# Stage 1 — Scanner (Lexer)
-
-- Converts source code → tokens
-
-# Stage 2 — Parser
-- Builds Abstract Syntax Tree (AST)
-- Recursive descent parsing
-
-# Stage 3 — Semantic Analysis
-- Type checking
-- Symbol table
-- Scope validation
-
-# Stage 4 — IR Generation
-- Converts AST → 3-address code
-
-# Stage 5 — Interpreter
-- Executes IR  Handles:
-      
-    1. control flow
-            
-    2. function calls
-            
-    3. recursion
-            
-    4. variable storage
-
-
-## Project Structure
-```bash
-HelloWorld/
-├── include/
-│   ├── ast.h
-│   ├── interpreter.h
-│   ├── ir.h
-│   └── tokens.h
-├── src/
-│   ├── scanner.c
-│   ├── parser.c
-│   ├── symtable.c
-│   ├── semantic.c
-│   ├── ir_gen.c
-│   ├── interpreter.c
-│   └── main.c
-├── test/
-│   ├── hello.learn
-│   ├── test1.learn
-│   ├── test2.learn
-│   ├── test3.learn
-│   └── test_errors.learn
-├── Makefile
-└── README.md
 ```
+HelloWorld is compiled in 5 stages:
+Source (.learn)
+│
+▼
+┌─────────────┐
+│  Stage 1    │  scanner.c
+│  Scanner    │  Reads characters → emits tokens
+└──────┬──────┘
+│  Token stream
+▼
+┌─────────────┐
+│  Stage 2    │  parser.c
+│  Parser     │  Tokens → Abstract Syntax Tree
+└──────┬──────┘
+│  AST
+▼
+┌─────────────┐
+│  Stage 3    │  semantic.c + symtable.c
+│  Semantic   │  Type checking + Symbol table
+│  Analyzer   │
+└──────┬──────┘
+│  Validated AST
+▼
+┌─────────────┐
+│  Stage 4    │  ir_gen.c
+│  IR         │  AST → 3-address IR instructions
+│  Generator  │
+└──────┬──────┘
+│  IR Program
+▼
+┌─────────────┐
+│  Stage 5    │  interpreter.c
+│  Interpreter│  Executes IR instructions directly
+└─────────────┘
+│
+▼
+Program Output
+```
+---
+
+## Build Stages
+
+| Stage | Status | Description |
+|-------|--------|-------------|
+| Stage 1 |  Complete | Scanner — tokenizes .learn source files |
+| Stage 2 |  Complete | Parser — recursive descent, builds AST |
+| Stage 3 |  Complete | Semantic Analyzer — type checking, symbol table |
+| Stage 4 |  Complete | IR Generator — 3-address intermediate code |
+| Stage 5 |  Complete | Interpreter — executes HelloWorld programs |
+
+---
 
 ## Build
-Using GCC
+
 ```bash
 gcc -Wall -Iinclude src/scanner.c src/parser.c src/symtable.c src/semantic.c src/ir_gen.c src/interpreter.c src/main.c -o lang
 ```
 
 ## Run
-- Linux / Mac
-```learn
-./lang test/hello.learn
+
+```bash
+.\lang.exe yourfile.learn
 ```
 
-- Windows (PowerShell)
-``` learn 
-.\lang.exe test\hello.learn
+---
+
+## Project Structure
 ```
-
-Always provide correct file path (files are inside test/ folder)
-
-# Example Output
-```learn
-30
-big number
-0
-1
-2
-3
-4
-55
+HelloWorld/
+├── include/
+│   ├── tokens.h        # Token type definitions (Stage 1)
+│   ├── ast.h           # AST node definitions (Stage 2)
+│   ├── symtable.h      # Symbol table (Stage 3)
+│   ├── ir.h            # IR instruction definitions (Stage 4)
+│   └── interpreter.h   # Runtime value and frame types (Stage 5)
+├── src/
+│   ├── scanner.c       # Stage 1 — Lexical analyzer
+│   ├── parser.c        # Stage 2 — Recursive descent parser
+│   ├── symtable.c      # Stage 3 — Hash table symbol table
+│   ├── semantic.c      # Stage 3 — Type checker
+│   ├── ir_gen.c        # Stage 4 — AST to IR translator
+│   ├── interpreter.c   # Stage 5 — IR execution engine
+│   └── main.c          # Entry point — pipeline driver
+├── test/
+│   ├── test1.learn     # Variables and functions
+│   ├── test2.learn     # Operators, decimals, loops
+│   ├── test3.learn     # Comments
+│   ├── test_errors.learn # Semantic error cases
+│   └── hello.learn     # Full language showcase
+└── README.md
 ```
+---
 
-# Language Syntax
+## Error Detection
 
-- Variable Declaration
-```learn
-let x is num = 10
-let name is text = "Aryan"
-```
+The compiler detects and reports:
+- Semantic error: variable 'x' already declared in this scope
+- Semantic error: undefined variable 'z'
+- Semantic error: cannot assign decimal to variable 'price' of type num
+- Semantic error: function 'add' expects 2 args but got 1
 
-- Reassignment
-```learn
-x = 20
-```
+---
 
-- Function
-```learn
-define add(a is num, b is num) returns num {
-    give a + b
-}
-```
-- Conditional
-```learn
-check (x > 5) {
-    show("big")
-} otherwise {
-    show("small")
-}
-```
+## Technical Highlights
 
-- Loop
-```learn
-repeat (let i is num = 0 ; i < 5 ; i++) {
-    show(i)
-}
-```
-- Comment
-```learn
-note: this is a comment
-```
+- **Scanner** — hand-written DFA with maximal munch, tracks line/column
+- **Parser** — recursive descent with operator precedence via call chain
+- **Symbol table** — hash table with djb2-style hash, pointer-to-pointer scope exit
+- **IR** — 3-address code with temporaries, labels, and jump instructions
+- **Interpreter** — stack frame architecture for correct recursion
 
-# Current Status
- - Scanner
- - Parser
- - Semantic Analyzer
- - IR Generator
- - Interpreter
- - Code Generation (Planned)
+---
 
+## Author
 
-# Future Improvements
- Support for:
-- lists
-- maps
-- stack operations
-- Better error handling
-- CLI improvements
-- Bytecode VM / Assembly backend
+Built by Nandini Goel — fresher CS project demonstrating compiler design
+fundamentals including automata theory, recursive descent parsing,
+type systems, intermediate representations, and runtime execution.
 
-
-# Why this project stands out
-
-This is not a simple parser project.
-
-It demonstrates:
-
-- Compiler design concepts
-- AST construction
-- Intermediate Representation (IR)
-- Runtime execution engine
-- Function call handling with recursion
-- Scope and memory management
-
-# Author
-
-Nandini Goel
-BTech CS | Compiler Design & Systems Programming Enthusiast
-
-GitHub: https://github.com/Nandini-1811
+**GitHub:** github.com/Nandini-1811/HelloWorld
